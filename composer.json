@@ -1,0 +1,29 @@
+{
+   "name": "niirrty/niirrty.drawing",
+   "type": "library",
+   "description": "A PHP drawing/imaging library.",
+   "license": "MIT",
+   "authors": [
+      {
+         "name": "Ni Irrty",
+         "email": "niirrty+code@gmail.com"
+      }
+   ],
+   "require": {
+      "php": ">=7.1",
+      "niirrty/niirrty.core": "~0.1",
+      "niirrty/niirrty.io": "~0.1",
+      "niirrty/niirrty.dynprop": "~0.1",
+      "niirrty/niirrty.web": "~0.1",
+      "niirrty/niirrty.date": "~0.1",
+      "niirrty/niirrty.gps": "~0.1"
+   },
+   "autoload": {
+      "files": [
+         "src/global-constants.php"
+      ],
+      "psr-4": {
+         "Niirrty\\Drawing\\": "src/"
+      }
+   }
+}
