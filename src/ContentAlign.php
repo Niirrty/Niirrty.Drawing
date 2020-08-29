@@ -1,17 +1,24 @@
-<?php
+<?php /** @noinspection PhpComposerExtensionStubsInspection */
 /**
  * @author     Ni Irrty <niirrty+code@gmail.com>
- * @copyright  ©2017, Ni Irrty
+ * @copyright  © 2017-2020, Ni Irrty
  * @package    Niirrty\Drawing
  * @since      2017-11-02
- * @version    0.1.0
+ * @version    0.3.0
  */
 
 
-declare( strict_types = 1 );
+declare( strict_types=1 );
 
 
 namespace Niirrty\Drawing;
+
+
+use function intval;
+use function is_int;
+use function is_string;
+use function preg_match;
+use function strval;
 
 
 /**
@@ -22,176 +29,180 @@ namespace Niirrty\Drawing;
 class ContentAlign
 {
 
-   
-   # <editor-fold desc="= = =   C O N S T A N T S   = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =">
 
-   /**
-    * Bottom right aligned
-    */
-   const BOTTOM_RIGHT = 0;
-
-   /**
-    * Bottom center aligned
-    */
-   const BOTTOM = 1;
-
-   /**
-    * Bottom left aligned
-    */
-   const BOTTOM_LEFT = 2;
-
-   /**
-    * Middle right aligned
-    */
-   const MIDDLE_RIGHT = 3;
-
-   /**
-    * Middle center aligned
-    */
-   const MIDDLE = 4;
-
-   /**
-    * Middle left aligned
-    */
-   const MIDDLE_LEFT = 5;
-
-   /**
-    * Top right aligned
-    */
-   const TOP_RIGHT = 6;
-
-   /**
-    * Top center aligned
-    */
-   const TOP = 7;
-
-   /**
-    * Top left aligned
-    */
-   const TOP_LEFT = 8;
-
-   # </editor-fold>
-
-   
-   # <editor-fold desc="= = =   P U B L I C   F I E L D S   = = = = = = = = = = = = = = = = = = = = = = = = = =">
-
-   /**
-    * The alignment value (one of the {@see \Drawing\ContentAlign} class constants).
-    *
-    * @var integer
-    */
-   public $Value;
-
-   # </editor-fold>
+    # <editor-fold desc="= = =   C O N S T A N T S   = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =">
 
 
-   # <editor-fold desc="= = =   P U B L I C   C O N S T U C T O R   = = = = = = = = = = = = = = = = = = = = = =">
+    /**
+     * Bottom right aligned
+     */
+    const BOTTOM_RIGHT = 0;
 
-   /**
-    * Inits a new instance.
-    *
-    * @param integer $value One of the {@see \Drawing\ContentAlign}::* class constants
-    */
-   public function __construct( int $value = self::BOTTOM_RIGHT )
-   {
-      if ( ! static::isValidValue( $value ) )
-      {
-         if ( ! \is_string( $value ) )
-         {
-            $this->Value = static::BOTTOM_RIGHT;
-         }
-         elseif ( \preg_match( '~^[0-8]$~', $value ) )
-         {
-            $this->Value = \intval( $value );
-         }
-         else
-         {
-            $this->Value = static::BOTTOM_RIGHT;
-         }
-      }
-      else
-      {
-         $this->Value = $value;
-      }
-   }
+    /**
+     * Bottom center aligned
+     */
+    const BOTTOM = 1;
 
-   # </editor-fold>
+    /**
+     * Bottom left aligned
+     */
+    const BOTTOM_LEFT = 2;
 
+    /**
+     * Middle right aligned
+     */
+    const MIDDLE_RIGHT = 3;
 
-   # <editor-fold desc="= = =   P U B L I C   M E T H O D S   = = = = = = = = = = = = = = = = = = = = = = = = = =">
+    /**
+     * Middle center aligned
+     */
+    const MIDDLE = 4;
 
-   public function __toString()
-   {
-      return \strval( $this->Value );
-   }
+    /**
+     * Middle left aligned
+     */
+    const MIDDLE_LEFT = 5;
 
-   /**
-    * Returns the associated \Imagick::GRAVITY_* constant value.
-    *
-    * @return integer
-    */
-   public function toGravity()
-   {
+    /**
+     * Top right aligned
+     */
+    const TOP_RIGHT = 6;
 
-      if ( class_exists( '\\Imagick' ) )
-      {
+    /**
+     * Top center aligned
+     */
+    const TOP = 7;
 
-         switch ( $this->Value )
-         {
+    /**
+     * Top left aligned
+     */
+    const TOP_LEFT = 8;
 
-            case self::TOP_LEFT:
-               return \Imagick::GRAVITY_NORTHWEST;
-
-            case self::TOP:
-               return \Imagick::GRAVITY_NORTH;
-
-            case self::TOP_RIGHT:
-               return \Imagick::GRAVITY_NORTHEAST;
-
-            case self::MIDDLE_LEFT:
-               return \Imagick::GRAVITY_WEST;
-
-            case self::MIDDLE:
-               return \Imagick::GRAVITY_CENTER;
-
-            case self::MIDDLE_RIGHT:
-               return \Imagick::GRAVITY_EAST;
-
-            case self::BOTTOM_LEFT:
-               return \Imagick::GRAVITY_SOUTHWEST;
-
-            case self::BOTTOM:
-               return \Imagick::GRAVITY_SOUTH;
-
-            default:
-               return \Imagick::GRAVITY_SOUTHEAST;
-
-         }
-
-      }
-
-      return 5; // Is the same than \Imagick::GRAVITY_CENTER
-
-   }
-
-   # </editor-fold>
+    # </editor-fold>
 
 
-   # <editor-fold desc="= = =   P R I V A T E   S T A T I C   M E T H O D S   = = = = = = = = = = = = = = = = = =">
+    # <editor-fold desc="= = =   P U B L I C   F I E L D S   = = = = = = = = = = = = = = = = = = = = = = = = = =">
 
-   private static function isValidValue( $value ) : bool
-   {
+    /**
+     * The alignment value (one of the {@see \Niirrty\Drawing\ContentAlign} class constants).
+     *
+     * @var integer
+     */
+    public $Value;
 
-      if ( ! \is_int( $value ) )
-      {
-         return false;
-      }
+    # </editor-fold>
 
-      return $value > -1 && $value < 9;
 
-   }
+    # <editor-fold desc="= = =   P U B L I C   C O N S T U C T O R   = = = = = = = = = = = = = = = = = = = = = =">
 
-   # </editor-fold>
+    /**
+     * Inits a new instance.
+     *
+     * @param integer $value One of the {@see \Niirrty\Drawing\ContentAlign}::* class constants
+     */
+    public function __construct( int $value = self::BOTTOM_RIGHT )
+    {
+
+        if ( !static::isValidValue( $value ) )
+        {
+            if ( !is_string( $value ) )
+            {
+                $this->Value = static::BOTTOM_RIGHT;
+            }
+            else if ( preg_match( '~^[0-8]$~', $value ) )
+            {
+                $this->Value = intval( $value );
+            }
+            else
+            {
+                $this->Value = static::BOTTOM_RIGHT;
+            }
+        }
+        else
+        {
+            $this->Value = $value;
+        }
+    }
+
+    # </editor-fold>
+
+
+    # <editor-fold desc="= = =   P U B L I C   M E T H O D S   = = = = = = = = = = = = = = = = = = = = = = = = = =">
+
+    public function __toString()
+    {
+
+        return strval( $this->Value );
+    }
+
+    /**
+     * Returns the associated \Imagick::GRAVITY_* constant value.
+     *
+     * @return integer
+     */
+    public function toGravity()
+    {
+
+        if ( class_exists( '\\Imagick' ) )
+        {
+
+            switch ( $this->Value )
+            {
+
+                case self::TOP_LEFT:
+                    return \Imagick::GRAVITY_NORTHWEST;
+
+                case self::TOP:
+                    return \Imagick::GRAVITY_NORTH;
+
+                case self::TOP_RIGHT:
+                    return \Imagick::GRAVITY_NORTHEAST;
+
+                case self::MIDDLE_LEFT:
+                    return \Imagick::GRAVITY_WEST;
+
+                case self::MIDDLE:
+                    return \Imagick::GRAVITY_CENTER;
+
+                case self::MIDDLE_RIGHT:
+                    return \Imagick::GRAVITY_EAST;
+
+                case self::BOTTOM_LEFT:
+                    return \Imagick::GRAVITY_SOUTHWEST;
+
+                case self::BOTTOM:
+                    return \Imagick::GRAVITY_SOUTH;
+
+                default:
+                    return \Imagick::GRAVITY_SOUTHEAST;
+
+            }
+
+        }
+
+        return 5; // Is the same than \Imagick::GRAVITY_CENTER
+
+    }
+
+    # </editor-fold>
+
+
+    # <editor-fold desc="= = =   P R I V A T E   S T A T I C   M E T H O D S   = = = = = = = = = = = = = = = = = =">
+
+    private static function isValidValue( $value ): bool
+    {
+
+        if ( !is_int( $value ) )
+        {
+            return false;
+        }
+
+        return $value > -1 && $value < 9;
+
+    }
+
+
+    # </editor-fold>
 
 
 }

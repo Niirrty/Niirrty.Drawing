@@ -4,9 +4,19 @@
 include dirname( __DIR__ ) . '/vendor/autoload.php';
 
 
-$exifData = \Niirrty\Drawing\Image\Exif\Loader\AutoLoader::Load( __DIR__ . '/images/dresden-from-pillnitz.jpg' );
+use Niirrty\Drawing\Image\Exif\Loader\PHP as PHPLoader;
 
 
-print_r( $exifData );
+$phpLoader = new PHPLoader();
+
+try
+{
+    $exifData = $phpLoader->load( __DIR__ . '/images/dresden-from-pillnitz.jpg' );
+    print_r( $exifData );
+}
+catch ( Exception $ex )
+{
+    echo $ex;
+}
 
 
